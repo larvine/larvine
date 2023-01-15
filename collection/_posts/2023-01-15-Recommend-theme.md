@@ -1,6 +1,6 @@
 ---
 title: "[2023 Top10] 추천하는 Jekyll Theme"
-key: recommended_theme
+key: recommended-theme
 tags: jekyll
 ---
 

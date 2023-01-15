@@ -207,62 +207,35 @@ collections:
     output: true
   docs:
     output: true
-  sample_page:
-    output: true
-  sample_articles:
-    output: true
-  sample_languages:
-    output: true
 
 defaults:
 ## home
-  - scope:
-      path: ""
-    values:
-      articles:
-        excerpt_type: html
+  #- scope:
+ #     path: ""
+#    values:
+#      articles:
+#        excerpt_type: html
 ## posts
   - scope:
       path: ""
       type: posts
     values:
       layout: article
-      sharing: true
-      license: true
+      sharing: false
+      license: false
       category: post
       aside:
         toc: true
-      show_edit_on_github: true
+      show_edit_on_github: false
       show_subscribe: true
-      pageview: true
-      lightbox: true
-      future: true
-      published: true
+      #pageview: true
+      #lightbox: true
 ## development
   - scope:
       path: ""
       type: dev
     values:
       nav_key: dev
-## samples
-  - scope:
-      path: ""
-      type: sample_page
-    values:
-      nav_key: samples
-  - scope:
-      path: ""
-      type: sample_articles
-    values:
-      nav_key: samples
-      show_date: true
-  - scope:
-      path: ""
-      type: sample_languages
-    values:
-      layout: article
-      nav_key: samples
-      show_date: false
 ## docs
   - scope:
       path: "_docs/en"

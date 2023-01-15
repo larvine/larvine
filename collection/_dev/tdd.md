@@ -1,7 +1,7 @@
 ---
 layout: articles
 title: TDD
-permalink: /articles/tdd.html
+permalink: /articles/tdd
 key: articles-tdd
 cover: /collection/assets/images/axure/articles-grid.jpg
 articles:

@@ -1,7 +1,7 @@
 ---
 layout: articles
 title: C++
-permalink: /articles/c++.html
+permalink: /articles/c++
 key: articles-cpp
 cover: /collection/assets/images/axure/articles-grid.jpg
 articles:

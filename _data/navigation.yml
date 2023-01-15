@@ -5,11 +5,8 @@ header:
     url:        /docs/en/quick-start
     key:        docs
   - title:      Development
-    url:        /dev.html
+    url:        /development
     key:        dev
-  - title:      Samples
-    url:        /samples.html
-    key:        samples
   - titles:
       # @start locale config
       en      : &EN       Archive

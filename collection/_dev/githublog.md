@@ -1,7 +1,7 @@
 ---
 layout: articles
 title: Github Blog
-permalink: /articles/githublog.html
+permalink: /articles/githublog
 key: articles-gitblog
 cover: /collection/assets/images/axure/articles-grid.jpg
 articles:
