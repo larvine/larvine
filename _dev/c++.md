@@ -1,11 +1,11 @@
 ---
 layout: articles
-title: TDD
-permalink: /articles/tdd
-key: articles-tdd
+title: C++
+permalink: /articles/c++
+key: articles-cpp
 cover: /collection/assets/images/axure/articles-grid.jpg
 articles:
-  data_source: site.sample_page
+  data_source: site.categories.c++
   type: grid
 ---
 

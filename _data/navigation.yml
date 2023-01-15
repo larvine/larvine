@@ -59,9 +59,6 @@ header:
       # @end locale config
     url: /about.html
 
-  - title:      GitHub
-    url:        https://github.com/larvine/larvine
-
 docs-en:
   - title:      Start
     children:

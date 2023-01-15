@@ -201,7 +201,7 @@ exclude:
   - /test
   - /vendor
 
-collections_dir: collection
+#collections_dir: collection
 collections:
   dev:
     output: true
