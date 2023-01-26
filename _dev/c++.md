@@ -3,7 +3,7 @@ layout: articles
 title: C++
 permalink: /articles/c++
 key: articles-cpp
-cover: /collection/assets/images/axure/articles-grid.jpg
+cover: /assets/images/cpp/cpp.png
 articles:
   data_source: site.categories.c++
   type: grid

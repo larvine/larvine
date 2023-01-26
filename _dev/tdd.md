@@ -3,7 +3,7 @@ layout: articles
 title: TDD
 permalink: /articles/tdd
 key: articles-tdd
-cover: /collection/assets/images/axure/articles-grid.jpg
+cover: /assets/images/tdd/development.png
 articles:
   data_source: site.categories.tdd
   #type: grid
