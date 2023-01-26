@@ -3,7 +3,7 @@ layout: articles
 title: Github Blog
 permalink: /articles/githublog
 key: articles-gitblog
-cover: /collection/assets/images/axure/articles-grid.jpg
+cover: /assets/images/blog/blogger.png
 articles:
   data_source: site.categories.githublog
   #type: grid
