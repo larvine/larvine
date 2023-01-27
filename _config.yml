@@ -18,7 +18,7 @@
 ##############################
 text_skin: default # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
 highlight_theme: tomorrow-night-bright # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
-url     : https://github.com/larvine # the base hostname & protocol for your site e.g. https://www.someone.com
+url     : https://larvine.github.io/larvine # the base hostname & protocol for your site e.g. https://www.someone.com
 baseurl : /larvine # does not include hostname
 title   : MADE IN KOREA
 description: > # this means to ignore newlines until "Language & timezone"
@@ -118,7 +118,7 @@ sharing:
 ## => Comments
 ##############################
 comments:
-  provider: false # false (default), "disqus", "gitalk", "valine", "custom"
+  provider: custom # false (default), "disqus", "gitalk", "valine", "custom"
 
   ## Disqus
   disqus:
@@ -143,6 +143,9 @@ comments:
     visitor     : # false (default)
     meta        : # "[nick, mail, link]" (default) nickname, E-mail, Personal-site
 
+  custom:
+    theme       : icy-dark
+    issue_term  : pathname
 
 ## => Pageview
 ##############################

@@ -58,6 +58,10 @@ html,
   margin: map-get($spacers, 4) 0;
 }
 
+.utterances {
+  max-width: 100% !important;
+}
+
 .page__aside {
   .toc-aside {
     padding: map-get($spacers, 5) 0 map-get($spacers, 3) map-get($spacers, 5);
