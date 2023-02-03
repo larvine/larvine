@@ -1,12 +1,12 @@
 ---
 title: "[A to z] Jekyll Blog with TeXT Theme"
-key: githublog
+key: TeXt
 category: githublog
 tags: jekyll
 cover: /assets/images/recommend-theme-md/dark-mode.gif
 ---
 
-Jekyll로 블로그를 꾸며보자.
+Jekyll TeXt로 블로그를 꾸며보자.
 <!--more-->
 
 # Structure 이해
@@ -280,36 +280,6 @@ code {
   line-height: map-get($base, line-height-sm);
 }
 ``` 
-
-
----
-## 기본 용어
-### _layout
-page나 post에서 사용할 layout 파일을 지정한다.  
-
----
-### Collection
-page, post 외 custom하게 정의하는 문서이다.  
-
-
----
-### include  
-##### 01. include
-_include 에 존재하는 파일을 포함한다.  
-
-##### 02. include_relative
-_include 외 다른 폴더에 존재하는 파일을 포함할 수 있다.    
-
----
-### 전역변수  
-아래 형식 안에 선언된 모든 변수가 전역변수이다.  
-```html
----
-layout: page
-title: Samples
-permalink: /samples.html  
----  
-```
 
 ---
 # Reference
