@@ -132,7 +132,12 @@ permalink
 
 ---
 ## Sidebar 설정  
-##### 01. _config.yml에 sidebar를 어떻게 구성할지 정의한다.  
+화면 오른쪽 상단에 Docs라는 카테고리를 두고, 이를 클릭하면 목차 형식으로 post를 모아서 보고 싶다.  
+
+##### 01. post에 nav_key와 sidebar: nav를 정의한다.  
+
+원래는 _config.yml에 sidebar를 어떻게 구성할지 정의한다.  
+
 _config.yml
 : 
 ```yml
@@ -151,7 +156,26 @@ _config.yml
       lightbox: true
 ```  
 
-여기서 sidebar의 nav는 docs-en으로 정의한다.  
+위 방법으로 하면 _docs 폴더를 새로 만들어서 거기에 post를 모아야 한다.  
+새로운 카테고리를 만들 때마다 폴더를 추가하게 되는 것이다.  
+
+현재 나는 post들을 모두 _post에 두고 필요에 따라 목차로, 카테고리별로 모으고 싶기 때문에 이 방법은 이용하지 않는다.
+{:.error}
+
+여기서 Docs의 key는 docs를 것이므로, 이를 nav_key로 둔다.  
+sidebar의 nav는 docs-en으로 정의한다.  
+
+/_post/2023-02-04-test.md
+: 
+```
+---
+title: test
+permalink: /test
+nav_key: docs
+sidebar:
+    nav: docs-kr
+---
+```
 
 ##### 02. _data/navigation.yml에 nav를 정의한다.
 sidebar의 nav를 먼저 정의하고, 그 아래로 어떻게 목차를 구성할지 정의한다.    

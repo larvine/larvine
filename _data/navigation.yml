@@ -1,6 +1,8 @@
 header:
   #- title:      Home
   #  url:        /test/
+  - title:      Docs
+    url:        /study-wsl
   - title:      Development
     url:        /dev.html
     key:        dev
@@ -55,3 +57,25 @@ header:
       tr      : &TR       Hakkında
       # @end locale config
     url: /about.html
+
+docs-kr:
+  - title:      개발 환경
+    children:
+      - title:  WSL
+        url:    /study-wsl
+      - title:  Git
+        url:    /study-git
+  - title:      Languages
+    children:
+      - title:  English
+        url:    /en/study-wsl
+
+docs-en:
+  - title:      Development environment
+    children:
+      - title:  WSL
+        url:    /en/study-wsl
+  - title:      Languages
+    children:
+      - title:  Korean
+        url:    /study-wsl
