@@ -1,9 +1,9 @@
 ---
-title: "[A to z] Jekyll Blog with TeXT Theme"
+title: "[E-Z] Jekyll Blog with TeXT Theme"
 key: TeXt
 category: githublog
 tags: jekyll
-cover: /assets/images/recommend-theme-md/dark-mode.gif
+#cover: /assets/images/recommend-theme-md/dark-mode.gif
 ---
 
 Jekyll TeXt로 블로그를 꾸며보자.

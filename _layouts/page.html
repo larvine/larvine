@@ -134,7 +134,8 @@ layout: base
               {%- if _article_header_align == 'center' -%}
                 <div class="hero hero--center hero--dark overlay" style="{{ _header_style }}">
               {%- else -%}
-                <div class="hero hero--dark overlay" style="{{ _header_style }}">
+                <div class="hero hero--dark overlay random_BG" style="{{ _header_style }} height:100vh;">
+                <script>{%- include scripts/customJS/randomBgImg.js -%}</script>
               {%- endif -%}
             {%- else -%}
               {%- if _article_header_align == 'center' -%}
@@ -254,6 +255,10 @@ layout: base
   {%- endif -%}
   {%- include scripts/page.js -%}
 </script>
+
+{% if site.dark_theme_toggle == true %}
+<script>{%- include scripts/customJS/toggleTheme.js -%}</script>
+{% endif %}
 
 {%- if page.sidebar -%}
 <script>{%- include scripts/components/sidebar.js -%}</script>

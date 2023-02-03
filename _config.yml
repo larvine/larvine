@@ -185,6 +185,7 @@ analytics:
 markdown    : kramdown
 highlighter : rouge
 permalink   : date
+dark_theme_toggle        : true
 
 exclude:
   - CHANGELOG.md
@@ -228,9 +229,15 @@ defaults:
       aside:
         toc: true
       show_edit_on_github: false
-      show_subscribe: true
+      show_subscribe: false
       #pageview: true
       #lightbox: true
+      # mode: immersive
+      # header:
+        # theme: dark
+      # article_header:
+        # type: overlay
+        # theme: dark
 ## development
   - scope:
       path: ""
