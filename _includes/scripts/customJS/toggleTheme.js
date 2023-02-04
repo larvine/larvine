@@ -13,11 +13,7 @@ if (darkTheme) {
   let isDarkMode = false;
   if (currentTheme) {
       isDarkMode = currentTheme === 'dark';
-  } else {
-   // isDarkMode = currentTheme === 'dark';
-      //isDarkMode = matchMedia('(prefers-color-scheme: dark)').matches;
-  }
-
+  } 
   setDarkMode(isDarkMode);
 
   let toggleThemeBtn = document.getElementById("toggle_dark_theme")
@@ -31,17 +27,3 @@ if (darkTheme) {
 
   toggleThemeBtn.addEventListener('click', changeTheme)
 }
-
-```
-function getCheckboxValue(event)  {
-  let result = '';
-  if(event.target.checked)  {
-    result = event.target.value;
-  }else {
-    result = '';
-  }
-  
-  document.getElementById('toggle_dark_theme').outerText
-    = result;
-}
-```
