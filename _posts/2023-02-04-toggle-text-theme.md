@@ -99,6 +99,9 @@ _sass/custom/toggle.scss
     }
 ```
 
+button class에도 span 속성을 이용하면 이미지 대신에 이모지를 올려줄 수 있다.
+{:.info}
+
 ## Reference
 [Toggle to dark mode in minimal-mistakes](https://etch-cure.github.io/blog/toggle-dark-mode/#--dark-themejs)  
 [지킬 블로그 배경화면 랜덤하게 변경하기](https://syki66.github.io/blog/2020/02/20/random-header-background.html)  
