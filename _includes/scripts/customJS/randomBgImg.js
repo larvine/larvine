@@ -2,12 +2,21 @@ const bg = document.querySelector(".random_BG");
 
 const bgList = [
     "https://user-images.githubusercontent.com/59393359/74718667-0adb8a80-5276-11ea-8bc3-0e36c67cf28a.jpg",
-    /assets/images/bgImg/flowers-gfe1c562e6_1280.png,
-    /assets/images/bgImg/boho-ga8ba1ae43_1280.jpg,
-    /assets/images/bgImg/cat-g26a959701_1280.jpg,
-    /assets/images/bgImg/grass-g5c6245bbf_1280.jpg,
-    /assets/images/bgImg/moorea-g080fd5e55_1280.jpg,
-    /assets/images/bgImg/mountains-g11fedc89a_1280.jpg
+    "/larvine/assets/images/bgImg/flower04.jpg",
+    "/larvine/assets/images/bgImg/fox.jpg",
+    "/larvine/assets/images/bgImg/leaves.png",
+    "/larvine/assets/images/bgImg/mountain01.jpg",
+    "/larvine/assets/images/bgImg/neurons.jpg",
+    "/larvine/assets/images/bgImg/nike.jpg",
+    "/larvine/assets/images/bgImg/painting.jpg",
+    "/larvine/assets/images/bgImg/painting01.jpg",
+    "/larvine/assets/images/bgImg/rabbit.jpg",
+    "/larvine/assets/images/bgImg/road.jpg",
+    "/larvine/assets/images/bgImg/room.jpg",
+    "/larvine/assets/images/bgImg/room01.jpg",
+    "/larvine/assets/images/bgImg/room02.jpg",
+    "/larvine/assets/images/bgImg/sunrise.jpg",
+    "/larvine/assets/images/bgImg/sunset.jpg",
 ];
 
 const randNum = Math.floor(Math.random() * bgList.length);
