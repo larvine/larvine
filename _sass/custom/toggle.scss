@@ -26,13 +26,14 @@
             border-radius: 50%;
             transition: all 0.4s ease;
             color: rgb(128, 128, 128);
-            background: white;
+            background: rgb(255, 255, 255);
         }
 
         background: rgb(101, 214, 255);
         &:after {
             left: 0;
-            content: "brightness_7";
+            content: "🌞";         
+            background: rgb(101, 214, 255);
         }
     }
 
@@ -40,7 +41,8 @@
         background: rgb(0, 5, 48);
         &:after {
             left: 50%;
-            content: "brightness_4";
+            content: "🌛";
+            background: rgb(0, 5, 48);
         }
     }
 }
