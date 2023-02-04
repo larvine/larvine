@@ -25,11 +25,11 @@
             height: 100%;
             border-radius: 50%;
             transition: all 0.4s ease;
-            color: gray;
+            color: rgb(128, 128, 128);
             background: white;
         }
 
-        background: lightgray;
+        background: rgb(101, 214, 255);
         &:after {
             left: 0;
             content: "brightness_7";

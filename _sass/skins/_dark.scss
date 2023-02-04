@@ -23,11 +23,11 @@ $background-color: #121212;
 // text colors
 $text-color-theme-light-d: #000;
 $text-color-theme-light:   #222;
-$text-color-theme-light-l: #888;
+$text-color-theme-light-l: #888888;
 
 $text-color-theme-dark-d:  rgba(#fff, .8);
 $text-color-theme-dark:    rgba(#fff, .7);
-$text-color-theme-dark-l:  rgba(#fff, .5);
+$text-color-theme-dark-l:  rgba(#ffea00, .5);
 
 $text-color-d:     $text-color-theme-dark-d;
 $text-color:       $text-color-theme-dark;
@@ -43,8 +43,8 @@ $footer-text-color: $text-color-3;
 $footer-background: $main-color-3;
 
 // border and shadow colors
-$border-color:     mix(#fff, $background-color, 20%);
-$border-color-l:   mix(#fff, $background-color, 10%);
+$border-color:     mix(#ffd105, $background-color, 20%);
+$border-color-l:   mix(#ffd105, $background-color, 10%);
 $decorate-color:   rgba(#fff, .1);
 $mask-color:       rgba(#000, .9);
 $select-color:     rgba($main-color-1, .5);
