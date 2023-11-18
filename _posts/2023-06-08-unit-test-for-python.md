@@ -4,7 +4,8 @@ key: pytest
 category: tdd
 tags: tdd
 ---
-
+pytest
+<!--more-->
 # 설치
 python 3.7+ 필요  
 
