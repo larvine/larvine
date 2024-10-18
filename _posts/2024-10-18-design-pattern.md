@@ -242,6 +242,11 @@ int main()
 ## dynamic_cast
 ![Image](/larvine/assets/images/design-pattern/img.PNG){:.border} 
 
+downcasting
+: 기반 클래스 포인터(참조) 타입을 파생 클래스 포인터(참조) 타입으로 캐스팅하는 것
+
+- 암시적으로 될 수 없음
+- 반드시 명시적 캐스팅을 해야 함
 
 ```cpp
 #include <print>
@@ -249,7 +254,7 @@ int main()
 class Animal
 {
 public:
-//	virtual ~Animal() {}
+	virtual ~Animal() {}
 };
 class Dog : public Animal {};
 class Cat : public Animal {};
@@ -265,5 +270,121 @@ int main()
 
 	std::println("{}", 
 				 reinterpret_cast<void*>(pd));
+}
+```
+
+### Cat을 Dog로 static_cast할 때 
+
+![Image](/larvine/assets/images/design-pattern/img01.PNG){:.border} 
+
+```cpp
+int main()
+{
+	Animal* pa = new Cat;
+	Dog* pd = static_cast<Dog*>(pa); // 분명히 잘못됐지만 성공은 함
+
+	std::println("{}", 
+				 reinterpret_cast<void*>(pd));
+}
+```
+
+static_cast
+: 
+- 컴파일 시간 캐스팅
+- runtime 오버헤드 없음
+- 컴파일 시간에는 pa가 가리키는 메모리를 조사할 수 없음 ->  잘못된 downcasting을 조사할 수 없음
+- 상속 관계에서는 항상 캐스팅 성공(주소 반환)
+
+
+해결책은 dynamic_cast이다.
+{:.success}
+
+dynamic_cast
+: 
+- runtime 캐스팅
+- runtime 오버헤드 있음
+- runtime에 pa가 가리키는 곳을 조사 후 잘못되지 않은 경우만 주소 반환 
+- 잘못된 downcasting 사용 시 0을 반환
+- polymorphic type에 대해서만 사용 가능함 -> 가상 함수가 없는 경우는 컴파일 에러
+
+```cpp
+class Animal
+{
+public:
+//	virtual ~Animal() {}
+};
+class Dog : public Animal {};
+class Cat : public Animal {};
+
+int main()
+{
+	Animal* pa = new Cat;
+	Dog* pd = dynamic_cast<Dog*>(pa); // 0
+
+	std::println("{}", 
+				 reinterpret_cast<void*>(pd));
+}
+```
+
+함수가 인자로 Animal* 를 사용하는 것은
+:
+- 모든 동물의 공통 작업만 하겠다는 것
+- 함수 안에서 어떤 동물인지 조사하는 코드는 좋은 코드가 아님
+
+
+```cpp
+class Animal
+{
+public:
+	virtual ~Animal() {}
+};
+class Cat : public Animal {};
+class Dog : public Animal 
+{
+public:
+	void run() {}
+};
+void foo(Animal* p)
+{
+	// p가 Dog를 가리킨다면 run() 멤버 함수를 호출하고 싶다
+	// p->run(); // error
+
+	Dog* pdog = dynamic_cast<Dog*>(p);
+
+	if ( pdog != nullptr )
+	{
+		pdog->run();
+	}
+
+}
+int main()
+{
+	Dog d; foo(&d);
+	Cat c; foo(&c);
+}
+```
+
+dynamic_cast와 디자인
+:
+- dynamic_cast 를 사용하기보다는 다형성을 활용하는 것이 좋음
+- 디자인 관점에서는 dynamic_cast를 되도록이면 사용하지 않는 것이 좋음
+
+
+```cpp
+void foo(Animal* p)
+{
+	// 모든 동물의 공통의 작업
+}
+
+void foo(Dog* p)
+{
+	foo(static_cast<Animal*>(p));
+	p->run();
+}
+
+int main()
+{
+	Dog d; foo(&d);
+	Cat c; foo(&c);
 }
 ```
