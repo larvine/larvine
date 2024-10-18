@@ -1015,3 +1015,253 @@ int main()
 ```
 
 ![Image](/larvine/assets/images/design-pattern/img08.PNG){:.border} 
+
+## Strategy
+- 행위 패턴(Behavior Pattern)
+- 의도
+
+> 다양한 알고리즘이 존재하면 이들 각각을 하나의 클래스로 캡슐화하여 알고리즘을 대체할 수 있도록 한다.
+
+> Strategy 패턴을 이용하면 클라이언트와 독립적으로 다양한 알고리즘으로 변형할 수 있다.
+
+알고리즘을 바꾸더라도 클라이언트는 아무런 변경을 할 필요가 없다.
+{:.info}
+
+![Image](/larvine/assets/images/design-pattern/img09.PNG){:.border} 
+
+```cpp
+#include <iostream>
+#include <string>
+#include <conio.h>
+
+class Edit
+{
+	std::string data;
+public:
+	std::string get_text()
+	{
+		std::cin >> data;
+		return data;
+	}
+};
+
+int main()
+{
+	Edit edit;
+	while (1)
+	{
+		std::string s = edit.get_text();
+		std::cout << s << std::endl;
+	}
+}
+```
+
+Edit 을 통해서 나이를 입력받고 싶다.
+{:.info}
+
+숫자만 입력하도록 제한해야 한다.
+
+```cpp
+class Edit
+{
+	std::string data;
+public:
+
+	std::string get_text()
+	{
+		data.clear();
+
+		while (1)
+		{
+			char c = _getch();
+
+			if (c == 13) break; // enter 키
+
+			if (isdigit(c))
+			{
+				data.push_back(c);
+				std::cout << c;
+			}
+		}
+		std::cout << "\n";
+		return data;
+	}
+};
+
+```
+
+Edit의 Validation 정책은 변경될 수 있어야 한다.
+{:.info}
+
+### Validation 정책 #1 변하는 코드를 가상함수로 분리
+template method 패턴
+
+```cpp
+class Edit
+{
+	std::string data;
+public:
+
+	std::string get_text()
+	{
+		data.clear();
+
+		while (1)
+		{
+			char c = _getch();
+
+			if (c == 13 && iscomplete(data) ) break;
+
+			if (validate(data, c))
+			{
+				data.push_back(c);
+				std::cout << c;
+			}
+		}
+		std::cout << "\n";
+		return data;
+	}
+	virtual bool validate(const std::string& data, char c)
+	{
+		return true;
+	}
+	virtual bool iscomplete(const std::string& data) // 입력 값이 완성되었는지 확인함
+	{
+		return true;
+	}
+};
+```
+
+
+```cpp
+class NumEdit : public Edit
+{	
+	int count;
+public:
+	NumEdit(int count = 9999) : count(count) {}
+
+	bool validate(const std::string& data, char c) override
+	{		
+		return data.size() < count && isdigit(c); 
+	}
+	bool iscomplete(const std::string& data) override
+	{
+		return count != 9999 && data.size() == count;
+	}
+};
+
+int main()
+{
+//	Edit edit;
+	NumEdit edit(5); // 5자리 숫자만, 5자리 입력 되어야만 enter 가능
+	
+//	AddressEdit edit2;
+	while (1)
+	{
+		std::string s = edit.get_text();
+		std::cout << s << std::endl;
+	}
+}
+```
+
+### Validation 정책 #2 변하는 코드를 다른 클래스로 분리
+
+인터페이스를 먼저 만들고, Edit에서 약한 결합으로 다양한 Validation 정책 클래스 사용
+
+![Image](/larvine/assets/images/design-pattern/img10.PNG){:.border} 
+
+```cpp
+#include <iostream>
+#include <string>
+#include <conio.h>
+
+struct IValidator
+{
+	virtual bool validate(const std::string& data, char c) = 0;
+	virtual bool iscomplete(const std::string& data) { return true;}
+	virtual ~IValidator() {}
+};
+
+
+
+class Edit
+{
+	std::string data;
+
+	IValidator* val = nullptr;
+public:
+	void set_validator(IValidator* p) { val = p;}
+
+	std::string get_text()
+	{
+		data.clear();
+
+		while (1)
+		{
+			char c = _getch();
+
+			if (c == 13 && ( val == nullptr || val->iscomplete(data)    )  ) break;
+			
+			if (val == nullptr || val->validate(data, c))
+			{
+				data.push_back(c);
+				std::cout << c;
+			}
+		}
+		std::cout << "\n";
+		return data;
+	}
+};
+
+
+int main()
+{
+	Edit edit;
+	while (1)
+	{
+		std::string s = edit.get_text();
+		std::cout << s << std::endl;
+	}
+}
+```
+
+
+```cpp
+class DigitValidator : public IValidator
+{
+	int count;
+public:
+	DigitValidator(int count = 9999) : count(count) {}
+
+	bool validate(const std::string& data, char c) override 
+	{
+		return data.size() < count && isdigit(c);
+	}
+	bool iscomplete(const std::string& data) override 
+	{
+		return count != 9999 && data.size() == count;
+	}
+};
+
+
+int main()
+{
+	Edit edit;
+	DigitValidator v(5);
+	edit.set_validator(&v);
+	
+//	DigitValidator v2(15);
+//	edit.set_validator(&v2);
+
+	while (1)
+	{
+		std::string s = edit.get_text();
+		std::cout << s << std::endl;
+	}
+}
+
+```
+
+![Image](/larvine/assets/images/design-pattern/img11.PNG){:.border} 
+
+![Image](/larvine/assets/images/design-pattern/img12.PNG){:.border} 
