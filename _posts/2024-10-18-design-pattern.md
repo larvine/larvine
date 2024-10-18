@@ -1165,6 +1165,7 @@ int main()
 ```
 
 ### Validation 정책 #2 변하는 코드를 다른 클래스로 분리
+strategy
 
 인터페이스를 먼저 만들고, Edit에서 약한 결합으로 다양한 Validation 정책 클래스 사용
 
@@ -1262,6 +1263,21 @@ int main()
 
 ```
 
+### Validation 방식 2가지 비교
+#### Validation #1 template method
 ![Image](/larvine/assets/images/design-pattern/img11.PNG){:.border} 
 
+- NumEdit, AddressEdit 등 Edit을 확장해가면서 Validation을 따로 쓰게 되므로 유연성이 떨어짐
+
+#### Validation #2 strategy
 ![Image](/larvine/assets/images/design-pattern/img12.PNG){:.border} 
+
+
+Edit 예제의 경우는 strategy가 적합하지만, template method가 더 나쁜 것이 아님
+{:.warning}
+
+사각형을 그리는 방법은
+- 다른 클래스에서 사용해야 할 일이 없고
+- 실행 시간에 교체되어야 할 이유도 없음
+- 가상 함수로 구현되면 멤버함수이므로 멤버 데이터 접근도 편해짐
+
