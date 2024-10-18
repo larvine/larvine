@@ -530,6 +530,9 @@ int main()
 카메라 사용자와 제작자 사이에서 지켜야하는 설계 규칙
 : 추상 클래스 사용
 
+파생이라는 단어보다는 "모든 카메라는 ICamera 인터페이스를 구현해야한다."는 표현이 더 정확함
+{:.success}
+
 ```cpp
 #include <print>
 
@@ -605,3 +608,152 @@ int main()
 |---|---|
 | 추상 클래스 | 지켜야 하는 규칙 + 다른 멤버도 있는 경우 |
 | 인터페이스 | 지켜야하는 규칙(순수 가상함수)만 가진 것 |
+
+인터페이스를 만들 때
+: 
+- 결국 기반 클래스로 사용되므로 반드시 가상 소멸자 사용
+- class 대신 struct를 사용하는 경우도 많음 (public 적기 귀찮아서)
+
+![Image](/larvine/assets/images/design-pattern/img03.PNG){:.border} 
+
+강한 결합(tightly coupling)
+: 
+- 객체가 다른 객체와 강하게 결합되어 있는 것
+- 교체가 불가능하고 확장성 없는 경직된 디자인
+
+![Image](/larvine/assets/images/design-pattern/img04.PNG){:.border} 
+
+약한 결합(loosely coupling)
+: 
+- 객체가 다른 객체와 약하게 결합되어 있는 것(인터페이스를 통해서 통신)
+- 교체가 가능하고 확장성 있는 유연한 디자인
+
+## Shape 예시
+- 모든 도형을 타입으로 설계한다.
+- 기반 클래스가 있다면 모든 도형을 하나의 컨테이너에 보관할 수 있다.
+
+```cpp
+#include <iostream>
+#include <vector>
+
+class Shape
+{
+public:
+	virtual ~Shape() {}
+};
+
+class Rect : public Shape
+{
+public:
+	void draw() { std::cout << "draw Rect" << std::endl; }
+};
+
+class Circle : public Shape
+{
+public:
+	void draw() { std::cout << "draw Circle" << std::endl; }
+};
+
+int main()
+{
+	Rect* r1 = new Rect;
+	Circle* c1 = new Circle;
+
+	std::vector<Shape*> v;
+
+	v.push_back( new Rect);
+	v.push_back( new Circle);
+	
+}
+```
+
+![Image](/larvine/assets/images/design-pattern/img05.PNG){:.border} 
+
+기반 클래스 타입 포인터로는 파생 클래스의 고유 멤버에 접근할 수는 없다.
+{:.error}
+
+기반 클래스에도 draw()를 제공한다.
+{:.success}
+
+```cpp
+#include <iostream>
+#include <vector>
+
+class Shape
+{
+public:
+	virtual ~Shape() {}
+};
+class Rect : public Shape
+{
+public:
+	void draw() { std::cout << "draw Rect" << std::endl; }
+};
+class Circle : public Shape
+{
+public:
+	void draw() { std::cout << "draw Circle" << std::endl; }
+};
+
+int main()
+{
+	std::vector<Shape*> v;
+
+	while (1)
+	{
+		int cmd;
+		std::cin >> cmd;
+
+		if      ( cmd == 1 ) v.push_back(new Rect);
+		else if ( cmd == 2 ) v.push_back(new Circle);
+		else if ( cmd == 9 )
+		{
+			for (auto p : v) 
+				p->draw(); // error	 
+		}
+	}
+}
+```
+
+- 모든 파생 클래스에서 공통의 특징은 반드시 기반 클래스에도 있어야 한다.
+
+문법적인 규칙이 아니라 디자인적인 관점이다.
+{:.info}
+
+
+```cpp
+class Shape
+{
+public:
+	virtual void draw() { std::cout << "draw Shape" << std::endl; }
+
+	virtual ~Shape() {}
+};
+```
+
+- 기반 클래스 함수 중 파생 클래스가 재정의하게 되는 것은 반드시 가상함수로 만들어라
+
+가상 함수가 아니면 재정의하지 말라
+{:.info}
+
+```cpp
+class Rect : public Shape
+{
+public:
+	void draw() override  { std::cout << "draw Rect" << std::endl; }
+};
+class Circle : public Shape
+{
+public:
+	void draw() override { std::cout << "draw Circle" << std::endl; }
+};
+```
+
+
+다형성(polymorphism)
+: 
+- 동일한 표현식이 상황에 따라 다르게 동작하는 것
+- `p->draw()`는 상황(실제 가리키는 객체의 종류)에 따라 다르게 동작함
+
+
+
