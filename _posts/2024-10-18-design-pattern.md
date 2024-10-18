@@ -756,4 +756,262 @@ public:
 - `p->draw()`는 상황(실제 가리키는 객체의 종류)에 따라 다르게 동작함
 
 
+k번째 도형의 복사본을 만드는 방법
+: 
+1. dynamic_cast로 타입을 조사
+- 새로운 도형이 추가되면 기존 코드를 수정함 -> OCP 위반
 
+
+```cpp
+		else if (cmd == 8)
+		{
+			std::cout << "몇번째 도형을 복제 할까요 >> ";
+			int k;
+			std::cin >> k;
+
+			if ( dynamic_cast<Rect*>(v[k]) != nullptr )
+			{
+				v.push_back( new Rect );
+			}
+			else if ( dynamic_cast<Circle*>(v[k]) != nullptr )
+			{
+				v.push_back( new Circle );
+			}
+
+		}
+	}
+}
+
+```
+
+
+2. clone() 가상함수
+- 새로운 도형이 추가돼도 기존 코드를 수정하지 않아도 됨
+
+```cpp
+#include <iostream>
+#include <vector>
+
+class Shape
+{
+public:
+	virtual void draw() { std::cout << "draw Shape" << std::endl; }
+
+	virtual ~Shape() {}
+
+	virtual Shape* clone() const 
+	{
+		return new Shape(*this);
+	}
+};
+
+
+class Rect : public Shape
+{
+public:
+	void draw() override  { std::cout << "draw Rect" << std::endl; }
+
+	Shape* clone() const override
+	{
+		return new Rect(*this);
+	}
+};
+
+class Circle : public Shape
+{
+public:
+	void draw() override { std::cout << "draw Circle" << std::endl; }
+
+	Shape* clone() const override
+	{
+		return new Circle(*this);
+	}
+};
+
+
+int main()
+{
+	std::vector<Shape*> v;
+
+	while (1)
+	{
+		int cmd;
+		std::cin >> cmd;
+
+		if      ( cmd == 1 ) v.push_back(new Rect);
+		else if ( cmd == 2 ) v.push_back(new Circle);
+		else if ( cmd == 9 )
+		{
+			for (auto p : v) 
+				p->draw(); 
+		}
+
+		else if (cmd == 8)
+		{
+			std::cout << "몇번째 도형을 복제 할까요 >> ";
+			int k;
+			std::cin >> k;
+
+			v.push_back( v[k]->clone() );
+			
+		}
+	}
+}
+```
+
+OCP를 위해서 제어문이 아니라 다형성을 사용하라
+{:.info}
+
+디자인 패턴
+: 특정 문제를 해결하기 위해 만들어진 코딩때문에 이름을 부여한 것
+
+prototype 패턴
+: 기존 객체를 복사해서 새로운 객체를 만드는 패턴
+
+// 1. 객체의 생성과정을 OCP를 만족하게 할수 없을까 ?
+// 2. Undo/Redo 기능을 추가하려면 어떻게 해야 할까 ?
+
+# 공통성과 가변성의 분리
+## Template method
+- 행위 패턴(Behavior Pattern)
+- 의도
+
+> 오퍼레이션에는 알고리즘의 처리 과정만을 정의하고 각 단계에서 수행할 구체적인 처리는 sub class에서 정의한다. 
+
+알고리즘의 처리과정을 변경하지 않고 알고리즘 각 단계의 처리를 sub class에서 재정의할 수 있다.
+{:.info}
+
+![Image](/larvine/assets/images/design-pattern/img06.PNG){:.border} 
+
+
+GUI 환경에서 윈도우에 그림 그리기
+:   
+- 대부분의 라이브러리에는 그림을 그리기 위한 클래스를 제공함
+- 화면 깜빡임을 방지(flicker free)하기 위해 다양한 방법을 제공(더블 버퍼링 등)
+
+현재 파생 클래스들끼리 멤버 함수가 거의 동일해서 중복되고 있음
+{:.error}
+
+```cpp
+#include <iostream>
+#include "Painter.h"
+
+class Shape
+{
+public:
+	virtual ~Shape() {}
+	virtual void draw() = 0;
+};
+
+class Rect : public Shape
+{
+public:
+	void draw() override
+	{
+		PainterPath path;
+		path.begin();
+
+		// path 멤버 함수로 그림을 그린다.
+		path.draw_rect();
+
+		path.end();
+
+		Painter surface;
+		surface.draw_path(path);
+	}
+};
+
+
+class Circle : public Shape
+{
+public:
+	void draw() override
+	{
+		PainterPath path;
+		path.begin();
+
+		// path 멤버 함수로 그림을 그린다.
+		path.draw_circle();
+		
+		path.end();
+
+		Painter surface;
+		surface.draw_path(path);
+	}
+};
+
+int main()
+{
+	Shape* s1 = new Rect;
+	Shape* s2 = new Circle;
+
+	s1->draw();
+	s2->draw();
+}
+```
+
+![Image](/larvine/assets/images/design-pattern/img07.PNG){:.border} 
+
+- 변하지 않은 코드 내부에 있는 변해야 하는 코드를 찾는다.
+- 변해야 하는 코드를 가상함수로 분리한다.
+- 파생 클래스는 알고리즘의 처리 과정을 물려 받으면서 가상함수를 재정의하여 변경이 필요한 부분만 다시 만들 수 있다.
+
+```cpp
+#include <iostream>
+#include "Painter.h"
+
+class Shape
+{
+public:
+	virtual ~Shape() {}
+
+	void draw() 
+	{
+		PainterPath path;
+		path.begin();
+
+		// path 멤버 함수로 그림을 그린다.
+		draw_imp(path);
+
+		path.end();
+
+		Painter surface;
+		surface.draw_path(path);		
+	}
+
+protected:
+	virtual void draw_imp(PainterPath& path) = 0;
+};
+
+
+
+class Rect : public Shape
+{
+protected:
+	void draw_imp(PainterPath& path) override
+	{
+		path.draw_rect();
+	}
+};
+
+
+class Circle : public Shape
+{
+protected:
+	void draw_imp(PainterPath& path) override
+	{
+		path.draw_circle();
+	}
+};
+
+int main()
+{
+	Shape* s1 = new Rect;
+	Shape* s2 = new Circle;
+
+	s1->draw();
+	s2->draw();
+}
+```
+
+![Image](/larvine/assets/images/design-pattern/img08.PNG){:.border} 
