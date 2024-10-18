@@ -326,8 +326,8 @@ int main()
 }
 ```
 
-함수가 인자로 Animal* 를 사용하는 것은
-:
+함수가 인자로 Animal* 를 사용하는 것은  
+: 
 - 모든 동물의 공통 작업만 하겠다는 것
 - 함수 안에서 어떤 동물인지 조사하는 코드는 좋은 코드가 아님
 
@@ -364,8 +364,8 @@ int main()
 }
 ```
 
-dynamic_cast와 디자인
-:
+dynamic_cast와 디자인 
+: 
 - dynamic_cast 를 사용하기보다는 다형성을 활용하는 것이 좋음
 - 디자인 관점에서는 dynamic_cast를 되도록이면 사용하지 않는 것이 좋음
 
@@ -387,4 +387,212 @@ int main()
 	Dog d; foo(&d);
 	Cat c; foo(&c);
 }
+```
+
+## Abstract class
+순수 가상함수(pure virtual function)
+: 구현이 없고 =0 으로 끝나는 가상함수
+
+추상 클래스(abstract class)
+: 순수 가상함수가 1개 이상인 클래스
+- 객체를 생성할 수 없다.
+- 포인터 변수는 생성할 수 있다.
+
+```cpp
+class Shape
+{
+public:
+	virtual ~Shape() {}	
+
+	virtual void draw() = 0;
+};
+
+int main()
+{
+//	Shape  s;	// error	
+	Shape* p;	// ok
+}
+```
+
+### 추상 클래스로부터 파생된 클래스
+- 기반 클래스(추상 클래스)가 가진 순수 가상함수의 구현부를 제공하지 않으면 역시 추상클래스이다.
+- 객체를 생성할 수 있게 하려면 반드시 순수 가상함수를 override해서 구현부를 제공해야 한다.
+
+```cpp
+class Shape
+{
+public:
+	virtual ~Shape() {}	
+
+	virtual void draw() = 0;	
+};
+
+class Rect : public Shape
+{
+public:
+	virtual void draw() {} // 객체 생성 불가
+};
+
+int main()
+{
+	Rect r; // ??
+}
+```
+
+
+추상클래스의 의도 
+:
+- 파생 클래스에게 특정 멤버 함수를 반드시 만들라고 지시하기 위한 것
+
+### 도형(Shape)을 그릴 수 (draw) 있을까?
+- 사각형(Rect)은 실제 존재하는 객체이므로 그릴 수 있음
+- 도형(Shape)은 추상적인 개념이므로 그릴 수는 없음
+
+```cpp
+#include <print>
+
+class Shape
+{
+public:
+	virtual ~Shape() {}
+
+//	virtual void draw() { std::println("draw Shape"); }
+	virtual void draw() = 0;
+};
+
+class Rect : public Shape 
+{
+public:
+	void draw() override { std::println("draw Rect"); }
+
+    // draw 가 가상 함수일 때,
+    // Rect가 draw를 override하지 않으면
+    // Shape의 기본 구현을 물려 받게 된다.
+    // 논리적으로 맞나?
+};
+
+int main()
+{
+	Rect r;
+	r.draw();
+}
+```
+
+### 가상 함수 vs 순수 가상 함수
+|함수 종류| 특징|
+|---|---|
+|가상 함수|파생 클래스가 반드시 재정의할 필요 없음, 재정의 하지 않으면 기본 구현 제공|
+|순수 가상 함수|파생 클래스가 반드시 구현을 제공해야 함, 모든 도형이 지켜야 하는 규칙|
+
+## interface
+OCP, Open-Closed Principle 
+: 소프트웨어 개체(클래스, 모듈, 함수 등)는 확장에 대해 열려 있어야 하고, 수정에 대해서는 닫혀 있어야 한다.
+
+새로운 요소가 추가되어도 기존 요소가 변경되지 않게 설계해야 한다는 원칙
+{:.info}
+
+![Image](/larvine/assets/images/design-pattern/img02.PNG){:.border} 
+
+```cpp
+#include <print>
+
+class Camera
+{
+public:
+	void take() { std::println("take picture"); }
+};
+
+class HDCamera
+{
+public:
+	void take() { std::println("take HD picture"); }
+};
+
+class People
+{
+public:
+	void use_camera(Camera* p) { p->take(); }
+	void use_camera(HDCamera* p) { p->take(); }
+};
+
+int main()
+{
+	People p;
+	Camera c;
+	p.use_camera(&c);
+
+	HDCamera hc;
+	p.use_camera(&hc); // ?
+}
+```
+
+카메라 사용자와 제작자 사이에서 지켜야하는 설계 규칙
+: 추상 클래스 사용
+
+```cpp
+#include <print>
+
+
+
+// 규칙 : 모든 카메라는 ICamera 로 부터 파생 되어야 한다.
+// 규칙 : 모든 카메라는 ICamera 인터페이스를 구현해야 한다.
+//class ICamera
+struct ICamera
+{	
+//public:
+	virtual ~ICamera() {}
+
+	virtual void take() = 0;	
+};
+```
+
+카메라 사용자(People)
+: 특정 제품이 아닌 규칙의 이름(추상 클래스)만 사용
+
+```cpp
+class People
+{
+public:
+	void use_camera(ICamera* p) { p->take(); }
+};
+
+```
+
+다양한 카메라 제품
+: 
+- 반드시 규칙을 지켜야 함
+- 규칙을 담은 추상 클래스로부터 파생해야 함
+
+```cpp
+class Camera : public ICamera
+{
+public:
+	void take() { std::println("take picture"); }
+};
+
+class HDCamera : public ICamera
+{
+public:
+	void take() { std::println("take HD picture"); }
+};
+
+class UHDCamera : public ICamera
+{
+public:
+	void take() { std::println("take UHD picture"); }
+};
+
+int main()
+{
+	People p;
+	Camera c;
+	p.use_camera(&c);
+
+	HDCamera hc;
+	p.use_camera(&hc); // ok
+
+	UHDCamera uhc;
+	p.use_camera(&uhc); // ok
+}
+
 ```
